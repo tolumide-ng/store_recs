@@ -1,38 +1,13 @@
 use rocket::fairing::AdHoc;
-use rocket::Config;
+use rocket::figment::{
+    util::map,
+    value::{Map, Value},
+    Figment,
+};
 use rocket_sync_db_pools::{database, diesel};
-use std::collections::HashMap;
 use std::env;
 
-/// Create rocket config from env variables
-pub fn from_env() -> Config {
-    let port = env::var("PORT")
-        .unwrap_or_else(|_| "8000".to_string())
-        .parse::<u16>()
-        .expect("PORT environment variable should parse to an integer");
-
-    let mut database_config = HashMap::new();
-    let mut databases = HashMap::new();
-    match env::var("DATABASE_URL") {
-        Ok(val) => {
-            database_config.insert("url", val);
-            databases.insert("diesel_postgres_pool", database_config);
-        }
-        Err(e) => {
-            panic!("NO DATABASE_URL found in environment variable {}", e);
-        }
-    };
-
-    let localhost = std::net::Ipv4Addr::new(127, 0, 0, 1);
-
-    Config {
-        port: 8080,
-        // address: localhost,
-        ..Default::default()
-    }
-}
-
-#[database("recs_users")]
+#[database("recs_db")]
 pub struct RecsDbConn(diesel::PgConnection);
 
 pub struct AppState {
@@ -53,5 +28,27 @@ impl AppState {
                 secret: secret.into_bytes(),
             })
         })
+    }
+}
+
+pub fn db_config<'a>() -> Figment {
+    match env::var("DATABASE_URL") {
+        Ok(url) => {
+
+            println!("THE DATABASE URL IS>>>>>>> {:#?}", url);
+
+            let db: Map<_, Value> = map! {
+                "url" => Value::from(url),
+                "pool_size" => 10.into(),
+                "timeout" => 5.into()
+            };
+
+            let figment = rocket::Config::figment().merge(("databases", map!["my_db" => db]));
+
+            return figment;
+        }
+        Err(e) => {
+            panic!("NO DATABASE_URL found in environment variable {}", e);
+        }
     }
 }

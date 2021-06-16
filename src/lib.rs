@@ -8,13 +8,10 @@ extern crate diesel;
 use diesel::result::Error;
 use dotenv::dotenv;
 // use helpers::response_body::{FailureResponse, ResponseBody, SuccessResponse};
+use helpers::config::{db_config, AppState, RecsDbConn};
 use rocket::http::Status;
-use rocket::serde::{json::Json, Deserialize, Serialize};
-use rocket_cors::Cors;
-
-fn cors_fairing() -> Cors {
-    Cors::from_options(&Default::default()).expect("Error Creating Cors Fairing")
-}
+use rocket::serde::{json::Json, Serialize};
+use rocket_cors::{Cors, CorsOptions};
 
 #[derive(Serialize)]
 struct ResponseBody {
@@ -37,6 +34,11 @@ fn error_status(error: Error) -> Status {
     }
 }
 
+#[catch(500)]
+fn internal_error() -> &'static str {
+    "Whoops! Looks like we messed up."
+}
+
 #[catch(404)]
 fn not_found() -> Json<ResponseBody> {
     Json(ResponseBody {
@@ -45,8 +47,20 @@ fn not_found() -> Json<ResponseBody> {
     })
 }
 
+fn cors_fairing() -> Cors {
+    Cors::from_options(&CorsOptions::default()).expect("Cors Fairing cannot be created")
+}
+
 #[launch]
-pub fn rocket() -> rocket::Rocket {
+pub fn rocket() -> _ {
     dotenv().ok();
-    // rocket::custom()
+    let db_config = db_config();
+    // println!("RECEIVED CONFIG----------------------------------- {:#?}", db_config);
+
+    rocket::custom(db_config)
+        .mount("/", routes![todo])
+        // .attach(cors_fairing())
+        .attach(RecsDbConn::fairing())
+        .attach(AppState::manage())
+        .register("/", catchers![not_found, internal_error])
 }
