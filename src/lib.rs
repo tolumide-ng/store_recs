@@ -1,4 +1,6 @@
 pub mod helpers;
+pub mod schema;
+pub mod models;
 
 #[macro_use]
 extern crate rocket;
@@ -27,7 +29,7 @@ fn todo() -> Json<ResponseBody> {
     })
 }
 
-fn error_status(error: Error) -> Status {
+pub fn error_status(error: Error) -> Status {
     match error {
         Error::NotFound => Status::NotFound,
         _ => Status::InternalServerError,
@@ -47,7 +49,7 @@ fn not_found() -> Json<ResponseBody> {
     })
 }
 
-fn cors_fairing() -> Cors {
+pub fn cors_fairing() -> Cors {
     Cors::from_options(&CorsOptions::default()).expect("Cors Fairing cannot be created")
 }
 
