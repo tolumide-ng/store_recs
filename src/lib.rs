@@ -1,12 +1,13 @@
 pub mod helpers;
 pub mod schema;
-pub mod models;
+// pub mod models;
 
 #[macro_use]
 extern crate rocket;
 
 #[macro_use]
 extern crate diesel;
+extern crate uuid;
 use diesel::result::Error;
 use dotenv::dotenv;
 // use helpers::response_body::{FailureResponse, ResponseBody, SuccessResponse};
