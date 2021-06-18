@@ -14,8 +14,9 @@ table! {
         first_name -> Varchar,
         last_name -> Varchar,
         email -> Varchar,
-        phone -> Varchar,
-        phone_code -> Int4,
+        phone -> Nullable<Varchar>,
+        phone_code -> Nullable<Int4>,
+        created_at -> Timestamp,
     }
 }
 

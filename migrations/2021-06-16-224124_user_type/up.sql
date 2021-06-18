@@ -1,7 +1,8 @@
 -- Your SQL goes here
 CREATE TABLE user_type (
   id SERIAL PRIMARY KEY,
-  type VARCHAR NOT NULL
+  type VARCHAR NOT NULL,
+  created_at timestamp DEFAULT CURRENT_TIMESTAMP NOT NULL
 );
 
 INSERT INTO user_type (type) VALUES('ADMIN');
