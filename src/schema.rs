@@ -4,6 +4,8 @@ table! {
         country_code -> Varchar,
         iso_code -> Varchar,
         country -> Varchar,
+        created_at -> Timestamp,
+        updated_at -> Timestamp,
     }
 }
 
@@ -17,6 +19,7 @@ table! {
         phone -> Nullable<Varchar>,
         phone_code -> Nullable<Int4>,
         created_at -> Timestamp,
+        updated_at -> Timestamp,
     }
 }
 
@@ -25,6 +28,8 @@ table! {
         id -> Int4,
         #[sql_name = "type"]
         type_ -> Varchar,
+        created_at -> Timestamp,
+        updated_at -> Timestamp,
     }
 }
 

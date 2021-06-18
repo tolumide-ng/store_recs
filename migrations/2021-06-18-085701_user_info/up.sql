@@ -8,7 +8,9 @@ CREATE TABLE user_info (
     phone VARCHAR,
     phone_code INTEGER,
     FOREIGN KEY (phone_code) REFERENCES country_code,
-    created_at timestamp DEFAULT CURRENT_TIMESTAMP NOT NULL
+    created_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    updated_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP
     -- implement the country, state/location with neo4j
-)
+);
 
+SELECT diesel_manage_updated_at('user_info');
