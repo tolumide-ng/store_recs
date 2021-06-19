@@ -7,6 +7,7 @@ CREATE TABLE user_info (
     email VARCHAR UNIQUE NOT NULL,
     phone VARCHAR,
     phone_code INTEGER,
+    password: TEXT NOT NULL,
     FOREIGN KEY (phone_code) REFERENCES country_code,
     created_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
     updated_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP
