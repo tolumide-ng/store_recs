@@ -27,11 +27,11 @@ pub struct NewUserInfo<'a> {
     first_name: &'a str,
     last_name: &'a str,
     email: &'a str,
-    phone: Option<&'a str>,
-    phone_code: Option<i32>,
-    password: &'a str,
-    birth_country: &'a str,
-    residing_country: &'a str
+    // phone: Option<&'a str>,
+    // phone_code: Option<i32>,
+    // password: &'a str,
+    // birth_country: &'a str,
+    // residing_country: &'a str
 }
 
 

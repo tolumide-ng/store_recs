@@ -43,7 +43,16 @@ pub fn db_config<'a>() -> Figment {
                 "timeout" => 5.into()
             };
 
-            let figment = rocket::Config::figment().merge(("databases", map!["my_db" => db]));
+            // let port: Option<i32> = None;
+
+            // match env::var("PORT") {
+            //     Ok(port) => port = port.as_str().parse::<i32>,
+            //     Err(e) => {port = Some(8000)}
+            // }
+
+            // let port = env::var("PORT").expect("No PORT found in the environment variable");
+
+            let figment = rocket::Config::figment().merge(("port", 8000)).merge(("databases", map!["my_db" => db]));
 
             return figment;
         }

@@ -4,34 +4,28 @@ extern crate rocket;
 #[macro_use]
 extern crate diesel;
 extern crate uuid;
+extern crate validator;
 use diesel::result::Error;
 use dotenv::dotenv;
+use serde_json::json;
+
+#[macro_use]
+extern crate validator_derive;
 
 
 pub mod helpers;
 pub mod schema;
 pub mod models;
-// pub mod routes;
+pub mod validators;
+pub mod routes;
 
-// use helpers::response_body::{FailureResponse, ResponseBody, SuccessResponse};
 use helpers::config::{db_config, AppState, RecsDbConn};
 use rocket::http::Status;
 use rocket::serde::{json::Json, Serialize};
 use rocket_cors::{Cors, CorsOptions};
+use crate::helpers::response_generator::ResponseBody;
 
-#[derive(Serialize)]
-struct ResponseBody {
-    status_code: u32,
-    message: String,
-}
 
-#[get("/")]
-fn todo() -> Json<ResponseBody> {
-    Json(ResponseBody {
-        status_code: 200,
-        message: "Hello World".to_owned(),
-    })
-}
 
 pub fn error_status(error: Error) -> Status {
     match error {
@@ -47,11 +41,9 @@ fn internal_error() -> &'static str {
 
 #[catch(404)]
 fn not_found() -> Json<ResponseBody> {
-    Json(ResponseBody {
-        status_code: 404,
-        message: String::from("Resource Not Found"),
-    })
+    Json(ResponseBody::new(404, String::from("Resource Not Found")))
 }
+
 
 pub fn cors_fairing() -> Cors {
     Cors::from_options(&CorsOptions::default()).expect("Cors Fairing cannot be created")
@@ -64,7 +56,7 @@ pub fn rocket() -> _ {
     // println!("RECEIVED CONFIG----------------------------------- {:#?}", db_config);
 
     rocket::custom(db_config)
-        .mount("/", routes![todo])
+        .mount("/api", routes![routes::auth::signup, routes::auth::todo])
         // .attach(cors_fairing())
         .attach(RecsDbConn::fairing())
         .attach(AppState::manage())

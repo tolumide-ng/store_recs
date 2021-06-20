@@ -1,2 +1,2 @@
 pub mod config;
-pub mod response_body;
+pub mod response_generator;
