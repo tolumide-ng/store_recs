@@ -6,14 +6,8 @@ use validator::{Validate, ValidationError};
 use crate::helpers::response_generator::ResponseTrait;
 use crate::helpers::response_generator::{FailureResponse, SuccessResponse};
 
-#[derive(Debug)]
-pub enum Error {
-    TooLarge,
-    NoColon,
-    InvalidAge,
-    Io(std::io::Error),
-}
 
+// email
 #[derive(Debug, Validate, Deserialize)]
 struct Email<'a> {
     #[validate(email)]
@@ -37,20 +31,6 @@ impl<'a> Email<'a> {
     }
 }
 
-pub struct InputValidationError {
-    error: String,
-}
-
-impl ResponseTrait for InputValidationError {}
-
-impl InputValidationError {
-    pub fn new(error: String) -> Self {
-        InputValidationError {
-            error: String::from("Please provide a valid email address"),
-        }
-    }
-}
-
 
 pub fn is_email_valid<'a, T>(email: &'a str) -> Result<(), FailureResponse>  {
     let email = Email::new(email);
@@ -68,6 +48,8 @@ pub fn is_valid_string<'a>(input: Option<&'a str>, label: &'a str) -> Result<(),
 }
 
 
+
+// phone
 #[derive(Debug, Validate, Deserialize)]
 struct Phone<'a> {
     #[validate(phone)]
@@ -92,18 +74,11 @@ impl<'a> Phone<'a> {
 }
 
 
-
-
 pub fn is_valid_phone<'a>(input: &'a str) -> Result<(), FailureResponse> {
-    let phone = input.to_string().trim().parse::<u32>();
-
-    match phone {
-        Ok(_phone) => {
-            return Ok(())
-        },
-        Err(e) => {
-            return Err(FailureResponse::new(400, String::from("Please provide a valid phone number")))
-        }
+    let phone = Phone::new(input);
+    if phone.validate_phone().is_some() {
+        return Err(FailureResponse::new(400, String::from("Please provide a valid phone number")));
     }
+    Ok(())
 }
 
