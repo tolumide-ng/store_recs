@@ -7,8 +7,13 @@ CREATE TABLE user_info (
     email VARCHAR UNIQUE NOT NULL,
     phone VARCHAR,
     phone_code INTEGER,
-    password: TEXT NOT NULL,
-    FOREIGN KEY (phone_code) REFERENCES country_code,
+    password TEXT NOT NULL,
+    -- phone_code VARCHAR 
+    birth_country VARCHAR NOT NULL,
+    residing_country VARCHAR NOT NULL,
+    FOREIGN KEY (birth_country) REFERENCES country_code(iso_code) ON UPDATE CASCADE,
+    FOREIGN KEY (residing_country) REFERENCES country_code(iso_code) ON UPDATE CASCADE,
+    -- FOREIGN KEY (phone_code) REFERENCES country_code(code) ON UPDATE CASCADE,
     created_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
     updated_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP
     -- implement the country, state/location with neo4j

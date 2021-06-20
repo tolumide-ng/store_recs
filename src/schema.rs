@@ -1,7 +1,7 @@
 table! {
     country_code (id) {
         id -> Int4,
-        country_code -> Varchar,
+        country_phone_code -> Varchar,
         iso_code -> Varchar,
         country -> Varchar,
         created_at -> Timestamp,
@@ -18,6 +18,9 @@ table! {
         email -> Varchar,
         phone -> Nullable<Varchar>,
         phone_code -> Nullable<Int4>,
+        password -> Text,
+        birth_country -> Varchar,
+        residing_country -> Varchar,
         created_at -> Timestamp,
         updated_at -> Timestamp,
     }
@@ -32,8 +35,6 @@ table! {
         updated_at -> Timestamp,
     }
 }
-
-joinable!(user_info -> country_code (phone_code));
 
 allow_tables_to_appear_in_same_query!(
     country_code,

@@ -37,5 +37,5 @@ $$ LANGUAGE plpgsql;
 
 
 CREATE EXTENSION IF NOT EXISTS "uuid-ossp";
-END;
-$$ LANGUAGE plpgsql;
+-- END;
+-- $$ LANGUAGE plpgsql;

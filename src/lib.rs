@@ -1,8 +1,3 @@
-pub mod helpers;
-pub mod schema;
-// pub mod models;
-pub mod routes;
-
 #[macro_use]
 extern crate rocket;
 
@@ -11,6 +6,13 @@ extern crate diesel;
 extern crate uuid;
 use diesel::result::Error;
 use dotenv::dotenv;
+
+
+pub mod helpers;
+pub mod schema;
+// pub mod models;
+// pub mod routes;
+
 // use helpers::response_body::{FailureResponse, ResponseBody, SuccessResponse};
 use helpers::config::{db_config, AppState, RecsDbConn};
 use rocket::http::Status;
