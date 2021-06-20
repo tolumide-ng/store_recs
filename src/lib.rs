@@ -10,7 +10,7 @@ use dotenv::dotenv;
 
 pub mod helpers;
 pub mod schema;
-// pub mod models;
+pub mod models;
 // pub mod routes;
 
 // use helpers::response_body::{FailureResponse, ResponseBody, SuccessResponse};
