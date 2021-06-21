@@ -18,6 +18,7 @@ pub mod schema;
 pub mod models;
 pub mod validators;
 pub mod routes;
+pub mod middlewares;
 
 use helpers::config::{db_config, AppState, RecsDbConn};
 use rocket::http::Status;

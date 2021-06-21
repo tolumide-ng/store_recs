@@ -2,7 +2,8 @@ use crate::validators::auth::{NewUser};
 // use rocket::serde::{json::Json,};
 use rocket::serde::{json::Json, Serialize};
 use crate::helpers::response_generator::ResponseBody;
-use crate::validators::common::is_email_valid;
+// use crate::validators::common::is_email_valid;
+use crate::middlewares::auth::create_new_user;
 
 
 
@@ -21,8 +22,9 @@ pub fn signup(user: Json<NewUser>) -> &'static str {
     // };
 
     let the_user = user.into_inner();
+    create_new_user(the_user);
     // println!("THE USER>>>>>>>> {:#?}", user.into_inner());
-    the_user.validate_user();
+    // the_user.validate_user();
 
 
     // is_email_valid(user);

@@ -14,7 +14,7 @@ chrono = { version = "0.4.10", features = ["serde"] }
 rocket_cors = { version = "0.5.1", default-features = false }
 dotenv = "0.15.0"
 uuid = { version = "0.8", features = ["serde", "v4"] }
-validator = { version = "0.12", features = ["derive", "phone"] }
+validator = { version = "0.13", features = ["derive", "phone"] }
 validator_derive = "0.13.0"
 serde_json = { version = "1.0.64", default-features = false }
 regex = "1"

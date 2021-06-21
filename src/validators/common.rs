@@ -21,7 +21,7 @@ impl<'a> Email<'a> {
 
     pub fn validate_email(&self) -> Option<validator::ValidationErrors> {
         match self.validate() {
-            Ok(_user) => {
+            Ok(user) => {
                 None
             }
             Err(e) => {
@@ -32,9 +32,10 @@ impl<'a> Email<'a> {
 }
 
 
-pub fn is_email_valid<'a, T>(email: &'a str) -> Result<(), FailureResponse>  {
+pub fn is_email_valid<'a>(email: &'a str) -> Result<(), FailureResponse>  {
     let email = Email::new(email);
     if email.validate_email().is_some(){
+        println!("THERE WAS AN ERROR------------");
         return Err(FailureResponse::new(400, String::from("Please provide a valid email address")));
     }
     Ok(())
@@ -53,12 +54,12 @@ pub fn is_valid_string<'a>(input: Option<&'a str>, label: &'a str) -> Result<(),
 #[derive(Debug, Validate, Deserialize)]
 struct Phone<'a> {
     #[validate(phone)]
-    email: &'a str
+    phone: &'a str
 }
 
 impl<'a> Phone<'a> {
-    pub fn new (email: &'a str) -> Self {
-        Email{email}
+    pub fn new (phone: &'a str) -> Self {
+        Phone{phone}
     }
 
     pub fn validate_phone(&self) -> Option<validator::ValidationErrors> {
@@ -72,7 +73,6 @@ impl<'a> Phone<'a> {
         }
     }
 }
-
 
 pub fn is_valid_phone<'a>(input: &'a str) -> Result<(), FailureResponse> {
     let phone = Phone::new(input);
