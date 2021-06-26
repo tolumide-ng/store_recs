@@ -6,7 +6,7 @@ use rocket::http::Status;
 use rocket::request::{self, Outcome, Request, FromRequest};
 
 
-#[derive(Debug, Validate, Deserialize)]
+#[derive(Debug, Validate, Deserialize, Default)]
 pub struct NewUser<'a> {
     pub first_name: &'a str,
     pub last_name: &'a str,
